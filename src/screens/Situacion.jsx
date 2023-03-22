@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native'
 import { FontAwesome } from '@expo/vector-icons';
 
-const Situacion = () => {
+const Situacion = ({navigation}) => {
 
   const [opcionSituacion, setOpcionSituacion] = useState('opcion1');
   const [descripcion, setDescripcion] = useState('');
@@ -32,7 +32,9 @@ const Situacion = () => {
       <TextInput value={fecha} onChangeText={text => setFecha(text)} placeholder='DD-MM-AAAA' keyboardType='numeric' style={styles.input}></TextInput>
       <FontAwesome style={styles.calendar} name='calendar' size={35} color='black'/>
 
-      <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+      <TouchableOpacity style={styles.button} onPress={ () => {
+          navigation.navigate('Profile')
+      }}>
         <Text style={styles.buttonText}>CONFIRMAR</Text>
       </TouchableOpacity>
     </View>
