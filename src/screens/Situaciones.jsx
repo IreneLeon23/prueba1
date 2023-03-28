@@ -2,90 +2,63 @@ import React from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { FontAwesome } from '@expo/vector-icons';
 
-const Situaciones = () => {
+const Situaciones = ({situacion1, fecha1, situacion2, fecha2, situacion3, fecha3}) => {
   return (
     <View style={styles.container}>
-      <View style={styles.top}>
-        <Text style={[styles.topinfo, styles.top1]}>Situación</Text>
-        <Text style={styles.topinfo}>Fecha: 0/0/0</Text>
-        <Text style={styles.color}></Text>
+      <View style={styles.situacionContainer}>
+        <View style={styles.situacionText}>
+          <Text>{situacion1}</Text>
+        </View>
+        <View style={styles.fechaText}>
+          <Text>{fecha1}</Text>
+        </View>
       </View>
-
-      <View style={styles.top}>
-        <Text style={[styles.topinfo, styles.top1]}>Situación</Text>
-        <Text style={styles.topinfo}>Fecha: 0/0/0</Text>
-        <Text style={styles.color}></Text>
+      <View style={styles.situacionContainer}>
+        <View style={styles.situacionText}>
+          <Text>{situacion2}</Text>
+        </View>
+        <View style={styles.fechaText}>
+          <Text>{fecha2}</Text>
+        </View>
       </View>
-
-      <View style={styles.top}>
-        <Text style={[styles.topinfo, styles.top1]}>Situación</Text>
-        <Text style={styles.topinfo}>Fecha: 0/0/0</Text>
-        <Text style={styles.color}></Text>
+      <View style={styles.situacionContainer}>
+        <View style={styles.situacionText}>
+          <Text>{situacion3}</Text>
+        </View>
+        <View style={styles.fechaText}>
+          <Text>{fecha3}</Text>
+        </View>
       </View>
-
-      <TouchableOpacity style={styles.boton}>
-        <FontAwesome style={styles.plus} name='plus' size={50} color="white" />
-      </TouchableOpacity>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
-  boton: {
-    width: 80,
-    height: 80,
-    backgroundColor: "#0A0821",
-    borderRadius: 100,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginLeft: 140,
-    marginTop: 20,
-  },
-  label: {
-    color: 'white',
-    fontSize: 20,
-    fontWeight: 700
-  },
-  boton: {
-    backgroundColor: '#0A0821',
-    borderRadius: 100,
-    width: 80,
-    height: 80,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginLeft: 140,
-    marginTop: 30,
-  },
   container: {
     flex: 1,
     flexDirection: 'column',
-  },
-  top: {
-    position: 'relative',
-    backgroundColor: '#0A0821',
-    width: 350,
-    height: 90,
-    top: 20,
-    left: 5,
-    borderRadius: 10,
-    marginBottom: 30,
-  },
-  topinfo: {
-    color: 'white',
-    fontSize: 25,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    margin: 10,
     padding: 10,
-  },
-  top1: {
-    fontWeight: 700,
-    marginBottom: -20
-  },
-  color: {
-    position: 'absolute',
-    backgroundColor: '#FF7A00',
-    width: 90,
-    height: 90,
     borderRadius: 10,
-    left: 260,
+    elevation: 5,
+  },
+  situacionContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+    marginVertical: 10,
+  },
+  situacionText: {
+    flex: 1,
+    alignItems: 'flex-start',
+  },
+  fechaText: {
+    flex: 1,
+    alignItems: 'flex-end',
   },
 });
 
