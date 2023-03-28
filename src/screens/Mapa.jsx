@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TextInput } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 
-export default function App() {
+export default function Mapa() {
 
   const [origin, setOrigin] = React.useState({
     latitude: 33.640411,

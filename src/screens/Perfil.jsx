@@ -14,8 +14,8 @@ const Perfil = () => {
             {/* insert user icon here */}
           </View>
           <View style={styles.userInfo}>
-            <Text style={styles.name}>John Smith</Text>
-            <Text style={styles.id}>ID: 123456</Text>
+            <Text style={styles.name}>Jesús Torres</Text>
+            <Text style={styles.id}>Ruta: 123456</Text>
           </View>
         </View>
         <View style={styles.form}>
@@ -62,23 +62,24 @@ const Perfil = () => {
       padding: 16,
       borderBottomWidth: 1,
       borderBottomColor: '#eee',
+
     },
     userIcon: {
       width: 40,
       height: 40,
       borderRadius: 20,
-      backgroundColor: '#ccc',
+      backgroundColor: '#ddd',
       marginRight: 16,
     },
     userInfo: {
       flex: 1,
     },
     name: {
-      fontSize: 18,
+      fontSize: 26,
       fontWeight: 'bold',
     },
     id: {
-      fontSize: 14,
+      fontSize: 18,
       color: '#666',
     },
     form: {
@@ -98,6 +99,11 @@ const Perfil = () => {
       borderRadius: 8,
       padding: 12,
       fontSize: 16,
+      borderBottomWidth: 1,
+      borderTopWidth: 0,
+      borderLeftWidth: 0,
+      borderRightWidth: 0,
+      borderColor: '#003566'
     },
   });
 
