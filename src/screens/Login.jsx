@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Button,
   TouchableOpacity,
+  ToastAndroid,
 } from "react-native";
 
 const Login = ({ onLogin }) => {
@@ -25,16 +26,18 @@ const Login = ({ onLogin }) => {
     if (ruta === "" || pass === "") {
       alert("Por favor, completa todos los campos");
     } else {
-      // axios
-      //   .post("http://localhost:5000/userLogin", { ruta, pass })
-      //   .then((response) => {
-      //     alert(response.data);
-      //    
-      //   })
-      //   .catch((error) => {
-      //     alert(error.response.data);
-      //   });
-      onLogin();
+      axios
+        .post("http://192.168.1.3:5000/userLogin", { ruta, pass })
+        .then((response) => {
+          // alert(response.data);
+          ToastAndroid.show(response.data, ToastAndroid.SHORT);
+          onLogin();
+        })
+        .catch((error) => {
+          // alert(error.response.data);
+          ToastAndroid.show(error.response.data, ToastAndroid.SHORT);
+        });
+  
     }
   };
 
