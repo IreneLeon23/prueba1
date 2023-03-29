@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TextInput } from 'react-native';
+import { StyleSheet, Text, View, TextInput, ToastAndroid} from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 
@@ -16,7 +16,8 @@ export default function Mapa() {
   async function getLocationPermission() {
     let {status} = await Location.requestForegroundPermissionsAsync();
     if (status !== 'granted') {
-      alert('Permission denied');
+      // alert('Permission denied');
+      ToastAndroid.show(response.data, ToastAndroid.SHORT);
       return;
     }
     let location = await Location.getCurrentPositionAsync({});
@@ -58,9 +59,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
+    // justifyContent: 'center',
+  
   },
   map: {
-    width: '100%',
+    width: 340,
+    height: 400,
   },
 });

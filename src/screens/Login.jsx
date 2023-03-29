@@ -1,19 +1,22 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useFonts } from "expo-font";
 import {
   View,
   Text,
   TextInput,
   StyleSheet,
-  Button,
   TouchableOpacity,
-  ToastAndroid,
 } from "react-native";
 
 const Login = ({ onLogin }) => {
   const [ruta, setRuta] = useState("");
   const [pass, setPass] = useState("");
-
+  const [fontsLoaded] = useFonts({
+    ProductBold: require("../assets/fonts/ProductBold.ttf"),
+    ProductRegular: require("../assets/fonts/ProductRegular.ttf"),
+  });
+  if (!fontsLoaded) return null;
   const handleRutaChange = (texto) => {
     setRuta(texto);
   };
@@ -29,15 +32,14 @@ const Login = ({ onLogin }) => {
       axios
         .post("http://192.168.1.3:5000/userLogin", { ruta, pass })
         .then((response) => {
-          // alert(response.data);
-          ToastAndroid.show(response.data, ToastAndroid.SHORT);
+          alert(response.data);
+        
           onLogin();
         })
         .catch((error) => {
-          // alert(error.response.data);
-          ToastAndroid.show(error.response.data, ToastAndroid.SHORT);
+         alert(error.response.data);
+       
         });
-  
     }
   };
 
@@ -90,10 +92,9 @@ const styles = StyleSheet.create({
   title: {
     marginTop: 100,
     fontSize: 50,
-    fontWeight: 700,
-    color: "black",
+    color: "#023047",
     marginBottom: 10,
-    fontFamily: "Roboto",
+    fontFamily: "ProductBold",
   },
   label: {
     fontSize: 22,
@@ -114,15 +115,16 @@ const styles = StyleSheet.create({
     width: 200,
   },
   input: {
-    borderWidth: 1,
-    borderColor: "#D9D9D9",
-    backgroundColor: "#D9D9D9",
-    borderRadius: 5,
+    borderBottomWidth: 1,
+    borderColor: "#000",
+    backgroundColor: "#fff",
+    borderRadius: 1,
     padding: 10,
     marginBottom: 20,
     width: "100%",
     fontSize: 20,
     color: "black",
+    fontFamily: "ProductRegular",
   },
   button: {
     backgroundColor: "#003566",
@@ -136,14 +138,15 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "white",
     fontSize: 20,
-    fontWeight: 700,
+    fontWeight: 500,
+    fontFamily: "ProductRegular",
   },
   link: {
     marginTop: 30,
   },
   textLink: {
     color: "#000",
-    fontWeight: 700,
+    fontFamily: "ProductRegular",
     fontSize: 20,
   },
 });
