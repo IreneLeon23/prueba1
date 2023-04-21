@@ -7,14 +7,13 @@ import Home from "./src/screens/Home";
 import Perfil from "./src/screens/Perfil";
 import Situacion from "./src/screens/Situacion";
 import Mapa from "./src/screens/Mapa";
-import Escaneos from "./src/screens/Escaneos";
+import Ubicaciones from "./src/screens/Ubicaciones";
 import Situaciones from "./src/screens/Situaciones";
 import { FontAwesome } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
 const Drawer = createDrawerNavigator();
 
 const App = () => {
-  
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const handleSubmit = () => {
@@ -29,9 +28,16 @@ const App = () => {
       {isLoggedIn ? (
         <Drawer.Navigator
           initialRouteName="Home"
-          screenOptions={{ drawerLabelStyle: { fontSize: 16, fontFamily: "ProductRegular", margin: 5, alignItems: "center"} }}
+          screenOptions={{
+            drawerLabelStyle: {
+              fontSize: 16,
+              fontFamily: "ProductRegular",
+              margin: 5,
+              alignItems: "center",
+            },
+          }}
         >
-          <Drawer.Screen
+          {/* <Drawer.Screen
             name="Inicio"
             component={Home}
             options={{
@@ -39,6 +45,20 @@ const App = () => {
               drawerIcon: ({ focused, size }) => (
                 <FontAwesome
                   name="home"
+                  size={size}
+                  color={focused ? "blue" : "gray"}
+                />
+              ),
+            }}
+          /> */}
+          <Drawer.Screen
+            name="Ubicaciones"
+            component={Ubicaciones}
+            options={{
+              title: "Ubicaciones",
+              drawerIcon: ({ focused, size }) => (
+                <FontAwesome
+                  name="map-pin"
                   size={size}
                   color={focused ? "blue" : "gray"}
                 />
@@ -59,20 +79,7 @@ const App = () => {
               ),
             }}
           />
-          <Drawer.Screen
-            name="Ubicaciones"
-            component={Escaneos}
-            options={{
-              title: "Ubicaciones",
-              drawerIcon: ({ focused, size }) => (
-                <FontAwesome
-                  name="map-pin"
-                  size={size}
-                  color={focused ? "blue" : "gray"}
-                />
-              ),
-            }}
-          />
+
           <Drawer.Screen
             name="Nueva situación"
             component={Situacion}

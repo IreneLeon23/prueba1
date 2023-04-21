@@ -39,7 +39,7 @@ const ScanCard = ({ scan }) => {
 const Escaneos = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Escaneos Registrados</Text>
+      {/* <Text style={styles.title}>Escaneos Registrados</Text> */}
       <View style={styles.scanList}>
         {scans.map((scan) => (
           <ScanCard key={scan.id} scan={scan} />

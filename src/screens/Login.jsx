@@ -29,17 +29,18 @@ const Login = ({ onLogin }) => {
     if (ruta === "" || pass === "") {
       alert("Por favor, completa todos los campos");
     } else {
-      axios
-        .post("http://192.168.1.3:5000/userLogin", { ruta, pass })
-        .then((response) => {
-          alert(response.data);
-        
-          onLogin();
-        })
-        .catch((error) => {
-         alert(error.response.data);
+      // axios
+      //   .post("http://192.168.1.3:5000/userLogin", { ruta, pass })
+      //   .then((response) => {
+      //     alert(response.data);
+     
+   
+      //   })
+      //   .catch((error) => {
+      //    alert(error.response.data);
        
-        });
+      //   });
+              onLogin();   
     }
   };
 

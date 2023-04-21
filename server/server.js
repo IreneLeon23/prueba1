@@ -11,14 +11,29 @@ app.use(bodyParser.json());
 //Importar conexión de mongoDB
 const archivoBD = require("./conexion");
 
-//Importacion de archivo de rutas y modelo
-const loginRoutes = require("./routes/login");
-app.use("/", loginRoutes);
+
 
 //Peticion
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
+
+app.get("/api/", (req, res) => {
+  res.send("Estas en API!");
+});
+
+//Importacion de archivo de rutas y modelo
+const loginRoutes = require("./routes/postLogin");
+app.use("/api/login", loginRoutes);
+
+//Ubicaciones
+const ubicacionesRoutes = require("./routes/getUbicaciones");
+app.use("/api/ubicaciones", ubicacionesRoutes);
+
+//Usuarios
+const usuariosRoutes = require("./routes/getUsers");
+app.use("/api/usuarios", usuariosRoutes);
+
 
 //Configurar puerto :>
 app.listen(5000, function () {
