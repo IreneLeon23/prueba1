@@ -1,53 +1,67 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
   StyleSheet,
-  Touchable,
   TouchableWithoutFeedback,
 } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { FontAwesome } from "@expo/vector-icons";
+import axios from "axios";
 
-const scans = [
-    { id: 1, name: "Tienda A", date: "12 de marzo de 2023", info: "Información adicional sobre Tienda A" },
-    { id: 2, name: "Tienda B", date: "14 de marzo de 2023", info: "Información adicional sobre Tienda B" },
-    { id: 3, name: "Tienda C", date: "16 de marzo de 2023", info: "Información adicional sobre Tienda C" },
-    { id: 4, name: "Tienda D", date: "18 de marzo de 2023", info: "Información adicional sobre Tienda D" },
-    { id: 5, name: "Tienda E", date: "20 de marzo de 2023", info: "Información adicional sobre Tienda E" },
-    { id: 6, name: "Tienda F", date: "22 de marzo de 2023", info: "Información adicional sobre Tienda F" },
-  ];
+const Ubicaciones = () => {
+  const [scans, setScans] = useState([]);
 
-const ScanCard = ({ scan }) => {
-  const [expanded, setExpanded] = useState(false);
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/api/ubicaciones")
+      .then((response) => setScans(response.data))
+      .catch((error) => console.error(error));
+  }, []);
 
-  const toggleExpand = () => {
-    setExpanded(!expanded);
+  const ubiCard = ({ scan }) => {
+    const [expanded, setExpanded] = useState(false);
+
+    const toggleExpand = () => {
+      setExpanded(!expanded);
+    };
+
+    return (
+      <TouchableWithoutFeedback onPress={toggleExpand}>
+        <View style={[styles.ubiCard, expanded && styles.expandedCard]}>
+          <Text style={styles.scanName}>{scan.tienda}</Text>
+          <Text style={styles.scanDate}>{scan.fecha}</Text>
+          <Text style={styles.scanDate}>{scan.ruta}</Text>
+          {expanded && (
+            <View>
+              <Text style={styles.scanInfo}>
+                Colonia: {scan.colonia}
+              </Text>
+              <Text style={styles.scanInfo}>
+                Calle: {scan.calle}
+              </Text>
+              <Text style={styles.scanInfo}>
+                Latitud: {scan.lat}
+              </Text>
+              <Text style={styles.scanInfo}>
+                Longitud: {scan.lng}
+              </Text>
+            </View>
+          )}
+        </View>
+      </TouchableWithoutFeedback>
+    );
   };
 
   return (
-    <TouchableWithoutFeedback onPress={toggleExpand}>
-      <View style={[styles.scanCard, expanded && styles.expandedCard]}>
-        <Text style={styles.scanName}>{scan.name}</Text>
-        <Text style={styles.scanDate}>{scan.date}</Text>
-        {expanded && <Text style={styles.scanInfo}>{scan.info}</Text>}
-      </View>
-    </TouchableWithoutFeedback>
-  );
-};
-
-const Escaneos = () => {
-  return (
     <View style={styles.container}>
-      {/* <Text style={styles.title}>Escaneos Registrados</Text> */}
       <View style={styles.scanList}>
         {scans.map((scan) => (
-          <ScanCard key={scan.id} scan={scan} />
+          <ubiCard key={scan._id} scan={scan} />
         ))}
       </View>
     </View>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -68,7 +82,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "flex-start",
   },
-  scanCard: {
+  ubiCard: {
     width: "47%",
     height: 150,
     marginBottom: 20,
@@ -135,4 +149,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Escaneos;
+export default Ubicaciones;

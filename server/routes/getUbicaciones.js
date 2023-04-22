@@ -36,10 +36,7 @@ const ubicacionesSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  cp: {
-    type: String,
-    required: true,
-  },
+
 });
 
 const Ubicaciones = mongoose.model("ubicaciones", ubicacionesSchema);

@@ -10,19 +10,22 @@ import {
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import {RutaContext} from "./RutaContext";
+import { RutaContext } from "./RutaContext";
 import axios from "axios";
+import { useRoute } from '@react-navigation/native'
 
-const Situacion = ({ navigation }) => {
-  const { ruta, setRuta, newSituationAdded, setNewSituationAdded } = useContext(RutaContext);
-  const [situation, setSituation] = useState("");
-  const [otherSituation, setOtherSituation] = useState("");
-  const [description, setDescription] = useState("");
+const EditSituacion = ({navigation}) => {
+  const route = useRoute();
+  const { scan } = route.params;
+  const { setRuta, newSituationAdded, setNewSituationAdded } = useContext(RutaContext);
 
-  const [date, setDate] = useState(new Date());
+  const [situation, setSituation] = useState(scan.situacion);
+  const [description, setDescription] = useState(scan.descripcion);
+
+  const [date, setDate] = useState(scan ? new Date(scan.fecha) : new Date());
   const [mode, setMode] = useState("date");
   const [show, setShow] = useState(false);
-  const [text, setText] = useState("Empty");
+  const [text, setText] = useState(scan.fecha);
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -42,86 +45,61 @@ const Situacion = ({ navigation }) => {
     setMode(currentMode);
   };
 
-  const sendFormData = () => {
-    if (!ruta || !situation || !description || !date) {
+  const sendFormData = async () => {
+    if (!situation || !description || !date) {
       alert("Por favor, completa todos los campos");
       return;
     }
-
-    const actualSituation = situation === "Otro" ? otherSituation : situation;
-
+  
     const formData = {
-      ruta: ruta,
-      situacion: actualSituation,
+      situacion: situation,
       descripcion: description,
       fecha: date,
     };
-
-    axios
-      .post("https://onroute.fly.dev/situaciones", formData)
-      .then((response) => {
-        console.log(response.data);
-        alert('Situacion guardada');
-        setSituation('');
-        setDescription('');
-        setDate(new Date());
-        setText('Empty');
-        setNewSituationAdded(true);
-      })
-      .catch((error) => {
-        console.log(error);
-        alert('Error al guardar la situación');
-      });
+  
+    try {
+      const response = await axios.put(`https://onroute.fly.dev/situaciones/${scan._id}`, formData);
+      console.log(response);
+      alert('Situacion modificada');
+      setNewSituationAdded(true);
+      navigation.goBack();
+    } catch (error) {
+      console.log(error);
+      alert('Error al modificar la situacion');
+    }
   };
+  
 
   const handleSubmit = () => {
     sendFormData();
   };
 
-
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerText}>Situaciones</Text>
-      </View>
+    <View style={styles.container}>
       <View style={styles.form}>
+
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>Situation:</Text>
+          <Text style={styles.label}>Situacion:</Text>
           <View style={styles.pickerContainer}>
-            <Picker
-              selectedValue={situation}
-              onValueChange={(value) => setSituation(value)}
-              style={styles.picker}
-            >
-              <Picker.Item label="Select a situation..." value="" />
-              <Picker.Item label="Choque" value="Choque" />
-              <Picker.Item label="Asalto" value="Asalto" />
-              <Picker.Item label="Transito" value="Transito" />
-              <Picker.Item label="Otro" value="Otro" />
-            </Picker>
-          </View>
-        </View>
-        {situation === "Otro" && (
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>Otro:</Text>
             <TextInput
-              style={styles.input}
-              placeholder="Especifique la situación"
-              onChangeText={(value) => setOtherSituation(value)}
+              style={styles.textInput}
+              value={situation}
+              onChangeText={(value) => setSituation(value)}
             />
           </View>
-        )}
+        </View>
+
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>Description:</Text>
+          <Text style={styles.label}>Descripcion:</Text>
           <TextInput
             style={styles.textArea}
-            placeholder="Enter description"
             multiline={true}
             numberOfLines={4}
             value={description}
             onChangeText={(value) => setDescription(value)}
           />
         </View>
+
         <View style={styles.inputContainer}>
           <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{text}</Text>
           <Text style={styles.label}>Date:</Text>
@@ -150,13 +128,17 @@ const Situacion = ({ navigation }) => {
             />
           )}
         </View>
+
         <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
           <Text style={styles.submitButtonText}>Submit</Text>
         </TouchableOpacity>
       </View>
-    </ScrollView>
-  );
-};
+    </View>
+  )
+}
+
+export default EditSituacion
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -188,9 +170,13 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginBottom: 16,
   },
-  picker: {
-    height: 50,
-    width: "100%",
+  textInput: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 8,
+    padding: 12,
+    textAlignVertical: "top",
+
   },
   textArea: {
     borderWidth: 1,
@@ -227,5 +213,3 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
   },
 });
-
-export default Situacion;
