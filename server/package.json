@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/IreneLeon23/prueba1.git"
+    "url": "https://github.com/IreneLeon23/prueba1.git"
   },
   "author": "MIDAH",
   "license": "ISC",
@@ -21,6 +21,7 @@
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "mongoose": "^7.0.2",
+    "mongoose-sequence": "^5.3.1",
     "nodemon": "^2.0.21"
   }
 }

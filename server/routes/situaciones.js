@@ -82,33 +82,3 @@ router.put("/situaciones/:_id", async (req, res) => {
 })
 
 module.exports = router;
-
-// router.patch('/situaciones/:id', getSituaciones, async(req, res) => {
-//     const {descripcion, fecha, situacion} = req.body;
-
-//     res.reportes.descripcion = descripcion
-//     res.reportes.fecha = fecha
-//     res.reportes.situacion = situacion
-
-//     res.json(res.reportes)
-
-//     res.reportes.save()
-// });
-
-
-
-// //FUNCION MEDIA PARA OBTENER LAS SITUACIONES POR ID
-// async function getSituaciones (req, res, next){
-//     let reportes
-//     try {
-//         reportes = await Situacion.findById(req,params.id);
-//         if (reportes === null) {
-//             return res.status(404).json({mensaje: 'No se pudo encontrar la situacion'})
-//         }
-//     } catch(error){
-//         return res.status(500).json({mensaje: error.mensaje})
-//     }
-
-//     res.reportes = reportes
-//     next();
-// }

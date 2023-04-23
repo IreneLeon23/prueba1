@@ -6,18 +6,20 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import axios from "axios";
-
+import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import EntypoIcon from 'react-native-vector-icons/Entypo';
 const Ubicaciones = () => {
   const [scans, setScans] = useState([]);
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/ubicaciones")
+      .get("http://onroutebackend.fly.dev/ubicaciones")
       .then((response) => setScans(response.data))
       .catch((error) => console.error(error));
   }, []);
 
-  const ubiCard = ({ scan }) => {
+  const UbiCard = ({ scan }) => {
     const [expanded, setExpanded] = useState(false);
 
     const toggleExpand = () => {
@@ -26,23 +28,17 @@ const Ubicaciones = () => {
 
     return (
       <TouchableWithoutFeedback onPress={toggleExpand}>
-        <View style={[styles.ubiCard, expanded && styles.expandedCard]}>
-          <Text style={styles.scanName}>{scan.tienda}</Text>
-          <Text style={styles.scanDate}>{scan.fecha}</Text>
-          <Text style={styles.scanDate}>{scan.ruta}</Text>
+        <View style={[styles.UbiCard, expanded && styles.expandedCard]}>
+          <Text style={styles.scanName}><FontAwesome5Icon name="map-pin" style={styles.icon} /> {scan.tienda} </Text>
+          <Text style={styles.scanDate}><MaterialIcons name="date-range" style={styles.icon} /> {scan.fecha} </Text>
+          <Text style={styles.scanRoute}><FontAwesome5Icon name="user" style={styles.icon}/> {scan.ruta}</Text>
           {expanded && (
             <View>
               <Text style={styles.scanInfo}>
-                Colonia: {scan.colonia}
+              <FontAwesome5Icon name="road" style={styles.icon} /> {scan.colonia}, {scan.calle}
               </Text>
               <Text style={styles.scanInfo}>
-                Calle: {scan.calle}
-              </Text>
-              <Text style={styles.scanInfo}>
-                Latitud: {scan.lat}
-              </Text>
-              <Text style={styles.scanInfo}>
-                Longitud: {scan.lng}
+              <FontAwesome5Icon name="search-location" style={styles.icon} /> {scan.lat}, {scan.lng}
               </Text>
             </View>
           )}
@@ -55,7 +51,7 @@ const Ubicaciones = () => {
     <View style={styles.container}>
       <View style={styles.scanList}>
         {scans.map((scan) => (
-          <ubiCard key={scan._id} scan={scan} />
+          <UbiCard key={scan._id} scan={scan} />
         ))}
       </View>
     </View>
@@ -82,9 +78,9 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "flex-start",
   },
-  ubiCard: {
+  UbiCard: {
     width: "47%",
-    height: 150,
+    height: 140,
     marginBottom: 20,
     borderRadius: 10,
     backgroundColor: "#fff",
@@ -112,9 +108,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#888",
   },
+  scanRoute: {
+    fontSize: 14,
+    color: "#003566",
+    fontWeight: "bold"
+  },
   expandedCard: {
-    width: "97%",
-    height: 140,
+    width: "100%",
+    height: 200,
     borderRadius: 10,
     backgroundColor: "#fff",
     shadowColor: "#000",
@@ -144,8 +145,12 @@ const styles = StyleSheet.create({
   },
   scanInfo: {
     fontSize: 16,
-    color: "#333",
+    color: "#888",
     marginTop: 10,
+  },
+  icon: {
+    marginRight: 5,
+    fontSize: 14
   },
 });
 

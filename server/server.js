@@ -1,8 +1,8 @@
 const express = require("express");
 const app = express();
+const port = process.env.PORT || "8080";
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const port = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -12,38 +12,31 @@ app.use(bodyParser.json());
 //Importar conexión de mongoDB
 const archivoBD = require("./conexion");
 
+//Peticion
+app.get("/", (req, res) => {
+  res.send("Hola cara de bola!");
+});
 
+ //Importacion de archivo de rutas y modelo
 
 //Situaciones
 const situacionRoutes = require("./routes/situaciones");
-app.use("/", situacionRoutes);
+app.use("/situaciones", situacionRoutes);
 
-//Peticion
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
-
-app.get("/api/", (req, res) => {
-  res.send("Estas en API!");
-});
-
-//Importacion de archivo de rutas y modelo
-const loginRoutes = require("./routes/postLogin");
-app.use("/api/login", loginRoutes);
-
+//Login
 // const loginRoutes = require("./routes/postLogin");
-// app.use("/", loginRoutes);
+// app.use("/login", loginRoutes);
+const loginRoutes = require("./routes/postLogin");
+app.use("/", loginRoutes);
 
 //Ubicaciones
 const ubicacionesRoutes = require("./routes/getUbicaciones");
-app.use("/api/ubicaciones", ubicacionesRoutes);
+app.use("/ubicaciones", ubicacionesRoutes);
 
 //Usuarios
 const usuariosRoutes = require("./routes/getUsers");
-app.use("/api/usuarios", usuariosRoutes);
+app.use("/usuarios", usuariosRoutes);
 
 
-//Configurar puerto :>
-app.listen(port, function () {
-  console.log("El servidor está arriba en el puerto", port);
-});
+
+app.listen(port, () => console.log(`Onroute app listening on port ${port}!`));

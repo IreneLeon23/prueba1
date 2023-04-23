@@ -45,7 +45,7 @@ const ScanCard = ({ scan, navigation }) => {
   );
 };
 
-const Escaneos = ({ navigation }) => {
+const Ubicaciones = ({ navigation }) => {
   const [situaciones, setSituaciones] = useState([]);
   const { ruta, setRuta, newSituationAdded, setNewSituationAdded } = useContext(RutaContext);
 
@@ -182,4 +182,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default Escaneos;
+export default Ubicaciones;

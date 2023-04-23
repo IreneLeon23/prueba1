@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext  } from "react";
 import axios from "axios";
 import { useFonts } from "expo-font";
 import {
@@ -8,7 +8,7 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
-import { RutaContext } from "./RutaContext";
+import {RutaContext} from "./RutaContext";
 
 const Login = ({ onLogin }) => {
   const { ruta, setRuta } = useContext(RutaContext);
@@ -31,18 +31,19 @@ const Login = ({ onLogin }) => {
       alert("Por favor, completa todos los campos");
     } else {
       axios
-        .post("https://onroute.fly.dev/api/login", { ruta, password })
+        .post("https://onroute.fly.dev/userLogin", { ruta, password })
         .then((response) => {
           alert(response.data);
-
+        
           onLogin();
         })
         .catch((error) => {
-          alert(error.response.data);
+         alert(error.response.data);
+       
         });
-      onLogin();
     }
   };
+
   return (
     <View style={styles.container}>
       <View style={styles.logoContainer}>

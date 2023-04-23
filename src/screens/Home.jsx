@@ -28,7 +28,7 @@ const Home = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Escaneos Semana</Text>
+      <Text style={styles.title}>Ubicaciones Semana</Text>
       <LineChart
         data={data}
         width={350}

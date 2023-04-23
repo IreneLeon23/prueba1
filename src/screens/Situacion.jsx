@@ -24,23 +24,26 @@ const Situacion = ({ navigation }) => {
   const [show, setShow] = useState(false);
   const [text, setText] = useState("Empty");
 
-  const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
-    setShow(Platform.OS === "Android");
-    setDate(currentDate);
 
-    let tempDate = new Date(currentDate);
-    let fDate = tempDate.getDate() + "/" + (tempDate.getMonth(), 1) + "/" + tempDate.getFullYear();
-    let fTime =
-      "Hours: " + tempDate.getHours() + "| Minutes: " + tempDate.getMinutes();
-    setText(fDate + "\n" + fTime);
-    console.log(fDate + "(" + fTime + ")");
-  };
+  //Para obtener fecha y hora ANTES
+  // const onChange = (event, selectedDate) => {
+  //   const currentDate = selectedDate || date;
+  //   setShow(Platform.OS === "Android");
+  //   setDate(currentDate);
 
-  const showMode = (currentMode) => {
-    setShow(true);
-    setMode(currentMode);
-  };
+  //   let tempDate = new Date(currentDate);
+  //   let fDate = tempDate.getDate() + "/" + (tempDate.getMonth(), 1) + "/" + tempDate.getFullYear();
+  //   let fTime =
+  //     "Hours: " + tempDate.getHours() + "| Minutes: " + tempDate.getMinutes();
+  //   setText(fDate + "\n" + fTime);
+  //   console.log(fDate + "(" + fTime + ")");
+  // };
+
+  // const showMode = (currentMode) => {
+  //   setShow(true);
+  //   setMode(currentMode);
+  // };
+  // _-------------------------------------------------
 
   const sendFormData = () => {
     if (!ruta || !situation || !description || !date) {
@@ -81,19 +84,16 @@ const Situacion = ({ navigation }) => {
 
   return (
     <ScrollView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerText}>Situaciones</Text>
-      </View>
       <View style={styles.form}>
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>Situation:</Text>
+          <Text style={styles.label}>Situación</Text>
           <View style={styles.pickerContainer}>
             <Picker
               selectedValue={situation}
               onValueChange={(value) => setSituation(value)}
               style={styles.picker}
             >
-              <Picker.Item label="Select a situation..." value="" />
+              <Picker.Item label="Seleccione una opción..." value="" />
               <Picker.Item label="Choque" value="Choque" />
               <Picker.Item label="Asalto" value="Asalto" />
               <Picker.Item label="Transito" value="Transito" />
@@ -112,7 +112,7 @@ const Situacion = ({ navigation }) => {
           </View>
         )}
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>Description:</Text>
+          <Text style={styles.label}>Descripción</Text>
           <TextInput
             style={styles.textArea}
             placeholder="Enter description"
@@ -124,31 +124,7 @@ const Situacion = ({ navigation }) => {
         </View>
         <View style={styles.inputContainer}>
           <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{text}</Text>
-          <Text style={styles.label}>Date:</Text>
-          {/* Fecha ---------------------------------------------------*/}
-          <TouchableOpacity
-            style={styles.submitButton}
-            onPress={() => showMode("date")}
-          >
-            <Text style={styles.submitButtonText}>Fecha</Text>
-          </TouchableOpacity>
-          {/* Hora ------------------------------------------------*/}
-          <TouchableOpacity
-            style={styles.submitButton}
-            onPress={() => showMode("time")}
-          >
-            <Text style={styles.submitButtonText}>Hora</Text>
-          </TouchableOpacity>
-          {show && (
-            <DateTimePicker
-              testID="dateTimePicker"
-              value={date}
-              mode={mode}
-              is24Hour={true}
-              display="default"
-              onChange={onChange}
-            />
-          )}
+
         </View>
         <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
           <Text style={styles.submitButtonText}>Submit</Text>
