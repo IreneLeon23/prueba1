@@ -26,6 +26,9 @@ app.get("/api/", (req, res) => {
 const loginRoutes = require("./routes/postLogin");
 app.use("/api/login", loginRoutes);
 
+// const loginRoutes = require("./routes/postLogin");
+// app.use("/", loginRoutes);
+
 //Ubicaciones
 const ubicacionesRoutes = require("./routes/getUbicaciones");
 app.use("/api/ubicaciones", ubicacionesRoutes);

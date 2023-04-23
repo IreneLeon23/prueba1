@@ -31,7 +31,7 @@ const Login = ({ onLogin }) => {
       alert("Por favor, completa todos los campos");
     } else {
       axios
-        .post("https://onroute.fly.dev/userLogin", { ruta, password })
+        .post("https://onroute.fly.dev/api/login", { ruta, password })
         .then((response) => {
           alert(response.data);
 
