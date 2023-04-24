@@ -19,15 +19,16 @@ app.get("/", (req, res) => {
 
  //Importacion de archivo de rutas y modelo
 
-//Situaciones
-const situacionRoutes = require("./routes/situaciones");
-app.use("/situaciones", situacionRoutes);
 
-//Login
+// //Situaciones
+// const situacionRoutes = require("./routes/situaciones");
+// app.use("/situaciones", situacionRoutes);
+
+// //Login
+// // const loginRoutes = require("./routes/postLogin");
+// // app.use("/login", loginRoutes);
 // const loginRoutes = require("./routes/postLogin");
-// app.use("/login", loginRoutes);
-const loginRoutes = require("./routes/postLogin");
-app.use("/", loginRoutes);
+// app.use("/", loginRoutes);
 
 //Ubicaciones
 const ubicacionesRoutes = require("./routes/getUbicaciones");
@@ -36,6 +37,9 @@ app.use("/ubicaciones", ubicacionesRoutes);
 //Usuarios
 const usuariosRoutes = require("./routes/getUsers");
 app.use("/usuarios", usuariosRoutes);
+
+const postUbicaciones = require("./routes/postUbicaciones");
+app.use("/postubicacion", postUbicaciones)
 
 
 

@@ -1,9 +1,15 @@
 import { Picker } from "@react-native-picker/picker";
 import React, { useState, useContext } from "react";
 import {
-  View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView, ToastAndroid
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+  ToastAndroid,
 } from "react-native";
-import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
+import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 import { RutaContext } from "./RutaContext";
 import axios from "axios";
 
@@ -16,9 +22,10 @@ const Situacion = ({ navigation }) => {
 
   const [dateTime, setDateTime] = useState("");
 
+  const now = new Date();
+  const dateTimeString = now.toISOString().slice(0, 19).replace("T", " ");
+
   const showDateTime = () => {
-    const now = new Date();
-    const dateTimeString = now.toLocaleString();
     setDateTime(dateTimeString);
     ToastAndroid.show(dateTimeString, ToastAndroid.SHORT);
   };
@@ -35,7 +42,7 @@ const Situacion = ({ navigation }) => {
       ruta: ruta,
       situacion: actualSituation,
       descripcion: description,
-      fecha: new Date(dateTime),
+      fecha: dateTimeString,
     };
 
     axios
@@ -62,7 +69,9 @@ const Situacion = ({ navigation }) => {
     <ScrollView style={styles.container}>
       <View style={styles.form}>
         <View style={styles.inputContainer}>
-          <Text style={styles.label}><FontAwesome5Icon name="flag" size={18} color="#003566" /> Situación</Text>
+          <Text style={styles.label}>
+            <FontAwesome5Icon name="flag" size={18} color="#003566" /> Situación
+          </Text>
           <View style={styles.pickerContainer}>
             <Picker
               selectedValue={situation}
@@ -88,7 +97,10 @@ const Situacion = ({ navigation }) => {
           </View>
         )}
         <View style={styles.inputContainer}>
-          <Text style={styles.label}><FontAwesome5Icon name="align-justify" size={18} color="#003566" /> Descripción</Text>
+          <Text style={styles.label}>
+            <FontAwesome5Icon name="align-justify" size={18} color="#003566" />{" "}
+            Descripción
+          </Text>
           <TextInput
             style={styles.textArea}
             placeholder="Ingrese descripción del percance"
@@ -101,13 +113,16 @@ const Situacion = ({ navigation }) => {
         <View style={styles.inputContainer}>
           <TouchableOpacity onPress={showDateTime}>
             <View style={styles.dateButton}>
-              
-              <Text style={styles.submitButtonText}><FontAwesome5Icon name="calendar" size={18} color="#fff" /> Ingresar fecha y hora</Text>
+              <Text style={styles.submitButtonText}>
+                <FontAwesome5Icon name="calendar" size={18} color="#fff" />{" "}
+                Ingresar fecha y hora
+              </Text>
             </View>
           </TouchableOpacity>
           {dateTime ? (
             <Text style={styles.dateSideText}>
-              Fecha y hora seleccionada: <Text style={styles.dateText}>{dateTime}</Text>
+              Fecha y hora seleccionada:{" "}
+              <Text style={styles.dateText}>{dateTime}</Text>
             </Text>
           ) : null}
         </View>
@@ -152,7 +167,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     marginBottom: 8,
-    color: "#003566"
+    color: "#003566",
   },
   pickerContainer: {
     borderWidth: 1,
@@ -191,12 +206,12 @@ const styles = StyleSheet.create({
     padding: 12,
     borderRadius: 8,
     alignItems: "center",
-    height: 50
+    height: 50,
   },
   submitButtonText: {
     color: "#fff",
     fontWeight: "bold",
-    fontSize: 16
+    fontSize: 16,
   },
   datepicker: {
     width: 100,

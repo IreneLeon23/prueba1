@@ -1,45 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
-
+const Ubicaciones = require("../models/ubicaciones");
 //MODEL
-const ubicacionesSchema = new mongoose.Schema({
-  _id: {
-    type: String,
-    required: true,
-  },
-  colonia: {
-    type: String,
-    required: true,
-  },
-  calle: {
-    type: String,
-    required: true,
-  },
-  fecha: {
-    type: String,
-    required: true,
-  },
-  lat: {
-    type: String,
-    required: true,
-  },
-  lng: {
-    type: String,
-    required: true,
-  },
-  ruta: {
-    type: String,
-    required: true,
-  },
-  tienda: {
-    type: String,
-    required: true,
-  },
 
-});
-
-const Ubicaciones = mongoose.model("ubicaciones", ubicacionesSchema);
 
 //ROUTE
 router.get("/", async (req, res) => {
