@@ -1,15 +1,18 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState } from "react";
 
 const RutaContext = createContext({
-  ruta: '',
+  ruta: "",
   setRuta: () => {},
   newSituationAdded: false,
   setNewSituationAdded: () => {},
+  newUbicationAdded: false,
+  setNewUbicationAdded: () => {},
 });
 
 const RutaProvider = ({ children }) => {
-  const [ruta, setRuta] = useState('');
+  const [ruta, setRuta] = useState("");
   const [newSituationAdded, setNewSituationAdded] = useState(false);
+  const [newUbicationAdded, setNewUbicationAdded] = useState(false);
 
   return (
     <RutaContext.Provider
@@ -18,6 +21,8 @@ const RutaProvider = ({ children }) => {
         setRuta,
         newSituationAdded,
         setNewSituationAdded,
+        newUbicationAdded,
+        setNewUbicationAdded,
       }}
     >
       {children}
@@ -25,5 +30,5 @@ const RutaProvider = ({ children }) => {
   );
 };
 
-export {RutaContext};
+export { RutaContext };
 export default RutaProvider;

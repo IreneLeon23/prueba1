@@ -1,14 +1,8 @@
 import React, { useEffect, useState, useContext } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Touchable,
-  TouchableWithoutFeedback,
-  Button,
-} from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { View, Text, StyleSheet, TouchableWithoutFeedback } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
+import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import axios from "axios";
 import { RutaContext } from "./RutaContext";
 import { ScrollView } from "react-native";
@@ -29,15 +23,20 @@ const ScanCard = ({ scan, navigation }) => {
     <View style={[styles.scanCard, expanded && styles.expandedCard]}>
       <TouchableWithoutFeedback onPress={toggleExpand}>
         <View style={{ flex: 1 }}>
-          <Text style={styles.scanName}>{scan.situacion}</Text>
-          <Text style={styles.scanDate}>{scan.fecha}</Text>
-          {expanded && <Text style={styles.scanInfo}>{scan.descripcion}</Text>}
+          <Text style={styles.scanName}><FontAwesome5Icon name="flag" style={styles.icon} /> {scan.situacion}</Text>
+          <Text style={styles.scanDate}><MaterialIcons name="date-range" style={styles.icon} /> {scan.fecha}</Text>
+          {expanded && <Text style={styles.scanInfo}><FontAwesome5Icon name="align-justify" style={styles.icon} /> {scan.descripcion}</Text>}
         </View>
       </TouchableWithoutFeedback>
       {expanded && (
         <View style={styles.editIconContainer}>
           <TouchableWithoutFeedback onPress={handleEditPress}>
-            <FontAwesome name="edit" size={25} color="#ef5b5b" style={{ top: -7 }} />
+            <FontAwesome
+              name="edit"
+              size={25}
+              color="#ef5b5b"
+              style={{ top: -7 }}
+            />
           </TouchableWithoutFeedback>
         </View>
       )}
@@ -47,42 +46,36 @@ const ScanCard = ({ scan, navigation }) => {
 
 const Ubicaciones = ({ navigation }) => {
   const [situaciones, setSituaciones] = useState([]);
-  const { ruta, setRuta, newSituationAdded, setNewSituationAdded } = useContext(RutaContext);
+  const { ruta, setRuta, newSituationAdded, setNewSituationAdded } =
+    useContext(RutaContext);
 
   useEffect(() => {
     const obtenerSituaciones = async () => {
       try {
         const response = await axios.get(
           `https://onroute.fly.dev/situaciones?ruta=${ruta}`
-        )
+        );
         setSituaciones(response.data);
       } catch (error) {
         console.error("Error al obtener situaciones:", error);
       }
-    }
+    };
 
     obtenerSituaciones();
     setNewSituationAdded(false);
   }, [ruta, newSituationAdded]);
 
-
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Reportes Registrados</Text>
-      <ScrollView style={styles.scanList} contentContainerStyle={styles.contentContainer}>
+
+      <ScrollView
+        style={styles.scanList}
+        contentContainerStyle={styles.contentContainer}
+      >
         {situaciones.map((scan, index) => (
           <ScanCard key={index} scan={scan} navigation={navigation} />
         ))}
       </ScrollView>
-      {/* <FlatList
-        contentContainerStyle={styles.contentContainer}
-        style={styles.scanList}
-        data={situaciones}
-        renderItem={({ item, index }) => (
-          <ScanCard key={index} scan={item} navigation={navigation} />
-        )}
-        numColumns={2}
-      /> */}
     </View>
   );
 };
@@ -140,7 +133,7 @@ const styles = StyleSheet.create({
     color: "#888",
   },
   expandedCard: {
-    width: "97%",
+    width: "100%",
     height: 140,
     borderRadius: 10,
     backgroundColor: "#fff",
@@ -162,7 +155,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 20,
     color: "#003566",
-
   },
   expandedDate: {
     fontSize: 20,
@@ -175,11 +167,13 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   editIconContainer: {
-    position: 'absolute',
+    position: "absolute",
     top: 10,
     right: 10,
   },
-
+  icon: {
+    fontSize: 18
+  }
 });
 
 export default Ubicaciones;

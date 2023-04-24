@@ -71,9 +71,9 @@ const Login = ({ onLogin }) => {
       <TouchableOpacity style={styles.button} onPress={handleSubmit}>
         <Text style={styles.buttonText}>Entrar</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.link}>
+      {/* <TouchableOpacity style={styles.link}>
         <Text style={styles.textLink}>¿Olvidaste tu contraseña?</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 };

@@ -1,52 +1,30 @@
 import { Picker } from "@react-native-picker/picker";
 import React, { useState, useContext } from "react";
 import {
-  View,
-  Text,
-  TextInput,
-  StyleSheet,
-  TouchableOpacity,
-  ScrollView,
+  View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView, ToastAndroid
 } from "react-native";
-import { FontAwesome } from "@expo/vector-icons";
-import DateTimePicker from "@react-native-community/datetimepicker";
-import {RutaContext} from "./RutaContext";
+import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
+import { RutaContext } from "./RutaContext";
 import axios from "axios";
 
 const Situacion = ({ navigation }) => {
-  const { ruta, setRuta, newSituationAdded, setNewSituationAdded } = useContext(RutaContext);
+  const { ruta, setRuta, newSituationAdded, setNewSituationAdded } =
+    useContext(RutaContext);
   const [situation, setSituation] = useState("");
   const [otherSituation, setOtherSituation] = useState("");
   const [description, setDescription] = useState("");
 
-  const [date, setDate] = useState(new Date());
-  const [mode, setMode] = useState("date");
-  const [show, setShow] = useState(false);
-  const [text, setText] = useState("Empty");
+  const [dateTime, setDateTime] = useState("");
 
-
-  //Para obtener fecha y hora ANTES
-  // const onChange = (event, selectedDate) => {
-  //   const currentDate = selectedDate || date;
-  //   setShow(Platform.OS === "Android");
-  //   setDate(currentDate);
-
-  //   let tempDate = new Date(currentDate);
-  //   let fDate = tempDate.getDate() + "/" + (tempDate.getMonth(), 1) + "/" + tempDate.getFullYear();
-  //   let fTime =
-  //     "Hours: " + tempDate.getHours() + "| Minutes: " + tempDate.getMinutes();
-  //   setText(fDate + "\n" + fTime);
-  //   console.log(fDate + "(" + fTime + ")");
-  // };
-
-  // const showMode = (currentMode) => {
-  //   setShow(true);
-  //   setMode(currentMode);
-  // };
-  // _-------------------------------------------------
+  const showDateTime = () => {
+    const now = new Date();
+    const dateTimeString = now.toLocaleString();
+    setDateTime(dateTimeString);
+    ToastAndroid.show(dateTimeString, ToastAndroid.SHORT);
+  };
 
   const sendFormData = () => {
-    if (!ruta || !situation || !description || !date) {
+    if (!ruta || !situation || !description || !dateTime) {
       alert("Por favor, completa todos los campos");
       return;
     }
@@ -57,23 +35,22 @@ const Situacion = ({ navigation }) => {
       ruta: ruta,
       situacion: actualSituation,
       descripcion: description,
-      fecha: date,
+      fecha: new Date(dateTime),
     };
 
     axios
       .post("https://onroute.fly.dev/situaciones", formData)
       .then((response) => {
         console.log(response.data);
-        alert('Situacion guardada');
-        setSituation('');
-        setDescription('');
-        setDate(new Date());
-        setText('Empty');
+        alert("Situacion guardada");
+        setSituation("");
+        setDescription("");
+        setDateTime("");
         setNewSituationAdded(true);
       })
       .catch((error) => {
         console.log(error);
-        alert('Error al guardar la situación');
+        alert("Error al guardar la situación");
       });
   };
 
@@ -81,12 +58,11 @@ const Situacion = ({ navigation }) => {
     sendFormData();
   };
 
-
   return (
     <ScrollView style={styles.container}>
       <View style={styles.form}>
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>Situación</Text>
+          <Text style={styles.label}><FontAwesome5Icon name="flag" size={18} color="#003566" /> Situación</Text>
           <View style={styles.pickerContainer}>
             <Picker
               selectedValue={situation}
@@ -112,10 +88,10 @@ const Situacion = ({ navigation }) => {
           </View>
         )}
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>Descripción</Text>
+          <Text style={styles.label}><FontAwesome5Icon name="align-justify" size={18} color="#003566" /> Descripción</Text>
           <TextInput
             style={styles.textArea}
-            placeholder="Enter description"
+            placeholder="Ingrese descripción del percance"
             multiline={true}
             numberOfLines={4}
             value={description}
@@ -123,11 +99,20 @@ const Situacion = ({ navigation }) => {
           />
         </View>
         <View style={styles.inputContainer}>
-          <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{text}</Text>
-
+          <TouchableOpacity onPress={showDateTime}>
+            <View style={styles.dateButton}>
+              
+              <Text style={styles.submitButtonText}><FontAwesome5Icon name="calendar" size={18} color="#fff" /> Ingresar fecha y hora</Text>
+            </View>
+          </TouchableOpacity>
+          {dateTime ? (
+            <Text style={styles.dateSideText}>
+              Fecha y hora seleccionada: <Text style={styles.dateText}>{dateTime}</Text>
+            </Text>
+          ) : null}
         </View>
         <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
-          <Text style={styles.submitButtonText}>Submit</Text>
+          <Text style={styles.submitButtonText}>Registrar</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
@@ -147,16 +132,27 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
   },
+  dateSideText: {
+    color: "#888",
+    fontSize: 14,
+  },
+  dateText: {
+    color: "#888",
+    fontSize: 14,
+    fontWeight: "bold",
+  },
   form: {
     padding: 16,
   },
   inputContainer: {
     marginBottom: 16,
+    marginHorizontal: 10,
   },
   label: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: "bold",
     marginBottom: 8,
+    color: "#003566"
   },
   pickerContainer: {
     borderWidth: 1,
@@ -190,9 +186,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 16,
   },
+  dateButton: {
+    backgroundColor: "#4287f5",
+    padding: 12,
+    borderRadius: 8,
+    alignItems: "center",
+    height: 50
+  },
   submitButtonText: {
     color: "#fff",
     fontWeight: "bold",
+    fontSize: 16
   },
   datepicker: {
     width: 100,

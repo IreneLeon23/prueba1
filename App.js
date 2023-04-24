@@ -10,6 +10,9 @@ import Mapa from "./src/screens/Mapa";
 import Ubicaciones from "./src/screens/Ubicaciones";
 import Situaciones from "./src/screens/Situaciones";
 import { FontAwesome } from "@expo/vector-icons";
+import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import EntypoIcon from "react-native-vector-icons/Entypo";
 import { useFonts } from "expo-font";
 import RutaContext from "./src/screens/RutaContext";
 import RutaProvider from "./src/screens/RutaContext";
@@ -42,28 +45,13 @@ const App = () => {
               },
             }}
           >
-            {/* <Drawer.Screen
-              name="Inicio"
-              component={Home}
-              options={{
-                title: "Inicio",
-                drawerIcon: ({ focused, size }) => (
-                  <FontAwesome
-                    name="home"
-                    size={size}
-                    color={focused ? "blue" : "gray"}
-                  />
-                ),
-              }}
-            /> */}
-
             <Drawer.Screen
               name="Mapa"
               component={Mapa}
               options={{
-                title: "Mapa",
+                title: "Nueva ubicación",
                 drawerIcon: ({ focused, size }) => (
-                  <FontAwesome
+                  <FontAwesome5Icon
                     name="map"
                     size={size}
                     color={focused ? "blue" : "gray"}
@@ -77,10 +65,11 @@ const App = () => {
               options={{
                 title: "Ubicaciones",
                 drawerIcon: ({ focused, size }) => (
-                  <FontAwesome
-                    name="map-pin"
+                  <FontAwesome5Icon
+                    name="map-marker-alt"
                     size={size}
                     color={focused ? "blue" : "gray"}
+                    light
                   />
                 ),
               }}
@@ -91,7 +80,7 @@ const App = () => {
               options={{
                 title: "Nuevo reporte",
                 drawerIcon: ({ focused, size }) => (
-                  <FontAwesome
+                  <FontAwesome5Icon
                     name="file"
                     size={size}
                     color={focused ? "blue" : "gray"}
@@ -106,8 +95,8 @@ const App = () => {
               options={{
                 title: "Reportes",
                 drawerIcon: ({ focused, size }) => (
-                  <FontAwesome
-                    name="exclamation-triangle"
+                  <FontAwesome5Icon
+                    name="copy"
                     size={size}
                     color={focused ? "blue" : "gray"}
                   />
@@ -120,7 +109,7 @@ const App = () => {
               options={{
                 title: "Perfil",
                 drawerIcon: ({ focused, size }) => (
-                  <FontAwesome
+                  <FontAwesome5Icon
                     name="user"
                     size={size}
                     color={focused ? "blue" : "gray"}

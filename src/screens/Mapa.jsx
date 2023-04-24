@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TextInput, ToastAndroid} from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
-import * as Location from 'expo-location';
+import React, { useState, useEffect, useContext } from "react";
+import { StyleSheet, Text, View, TextInput, ToastAndroid } from "react-native";
+import { TouchableOpacity, ScrollView } from "react-native";
+import MapView, { Marker } from "react-native-maps";
+import * as Location from "expo-location";
+import { Picker } from "@react-native-picker/picker";
+import { RutaContext } from "./RutaContext";
+import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 
 export default function Mapa() {
-
   const [origin, setOrigin] = React.useState({
     latitude: 33.640411,
     longitude: -84.419853,
@@ -12,10 +15,10 @@ export default function Mapa() {
 
   React.useEffect(() => {
     getLocationPermission();
-  }, [])
+  }, []);
   async function getLocationPermission() {
-    let {status} = await Location.requestForegroundPermissionsAsync();
-    if (status !== 'granted') {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== "granted") {
       // alert('Permission denied');
       ToastAndroid.show(response.data, ToastAndroid.SHORT);
       return;
@@ -23,13 +26,79 @@ export default function Mapa() {
     let location = await Location.getCurrentPositionAsync({});
     const current = {
       latitude: location.coords.latitude,
-      longitude: location.coords.longitude
-    }
+      longitude: location.coords.longitude,
+    };
     setOrigin(current);
   }
 
+  const { ruta, setRuta, newSituationAdded, setNewSituationAdded } =
+    useContext(RutaContext);
+  const [tienda, setTienda] = useState("");
+  const [colonia, setColonia] = useState("");
+  const [calle, setCalle] = useState("");
+  const [cp, setCP] = useState("");
+  const [lat, setLat] = useState("");
+  const [lng, setLng] = useState("");
+
+  const [date, setDate] = useState(new Date());
+  const [mode, setMode] = useState("date");
+  const [show, setShow] = useState(false);
+  const [text, setText] = useState("Empty");
+
+  const sendFormData = () => {
+    if (
+      !ruta ||
+      !tienda ||
+      !colonia ||
+      !calle ||
+      !cp ||
+      !lat ||
+      !lng ||
+      !date
+    ) {
+      alert("Por favor, completa todos los campos");
+      return;
+    }
+
+    //NOMÁS ES UNA VERIFICACIÓN PARA MI PAZ MENTAL, ESTE ELSE BORRALO A LA FREGADA
+    else {
+      ToastAndroid.show("Sí jala", ToastAndroid.SHORT);
+    }
+
+    const formData = {
+      ruta: ruta,
+      tienda: tienda,
+      colonia: colonia,
+      calle: calle,
+      cp: cp,
+      latitud: lat,
+      longitud: lng,
+      fecha: date,
+    };
+
+    // axios
+    //   .post("https://onroute.fly.dev/situaciones", formData)
+    //   .then((response) => {
+    //     console.log(response.data);
+    //     alert("Situacion guardada");
+    //     setSituation("");
+    //     setDescription("");
+    //     setDate(new Date());
+    //     setText("Empty");
+    //     setNewSituationAdded(true);
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //     alert("Error al guardar la situación");
+    //   });
+  };
+
+  const handleSubmit = () => {
+    sendFormData();
+  };
+
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <MapView
         style={styles.map}
         initialRegion={{
@@ -39,31 +108,155 @@ export default function Mapa() {
           longitudeDelta: 0.04,
         }}
       >
-        <Marker
-          coordinate={origin}
-        />
+        <Marker coordinate={origin} />
       </MapView>
-    </View>
+
+      {/* FORMULARIO EMPIEZA AQUÍ  */}
+
+      <View style={styles.form}>
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}><FontAwesome5Icon name="store" size={18} color="#003566" /> Tienda</Text>
+          <View style={styles.pickerContainer}>
+            <TextInput
+              style={styles.textInput}
+              value={tienda}
+              onChangeText={(value) => setTienda(value)}
+            />
+          </View>
+        </View>
+
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}><FontAwesome5Icon name="map-marker-alt" size={18} color="#003566" /> Colonia</Text>
+          <View style={styles.pickerContainer}>
+            <TextInput
+              style={styles.textInput}
+              value={colonia}
+              onChangeText={(value) => setColonia(value)}
+            />
+          </View>
+        </View>
+
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}><FontAwesome5Icon name="road" size={18} color="#003566" /> Calle</Text>
+          <View style={styles.pickerContainer}>
+            <TextInput
+              style={styles.textInput}
+              value={calle}
+              onChangeText={(value) => setCalle(value)}
+            />
+          </View>
+        </View>
+
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}><FontAwesome5Icon name="mail-bulk" size={18} color="#003566" /> Código postal</Text>
+          <View style={styles.pickerContainer}>
+            <TextInput
+              style={styles.textInput}
+              value={cp}
+              onChangeText={(value) => setCP(value)}
+            />
+          </View>
+        </View>
+        <View style={styles.latlngContainer}>
+          <View style={[styles.inputContainer]}>
+            <Text style={styles.label}><FontAwesome5Icon name="map-marker" size={18} color="#003566" /> Latitud</Text>
+            <View style={styles.pickerContainer}>
+              <TextInput
+                style={styles.textInput}
+                value={lat}
+                onChangeText={(value) => setLat(value)}
+              />
+            </View>
+          </View>
+
+          <View style={[styles.inputContainer]}>
+            <Text style={styles.label}><FontAwesome5Icon name="map-marker" size={18} color="#003566" /> Longitud</Text>
+            <View style={styles.pickerContainer}>
+              <TextInput
+                style={styles.textInput}
+                value={lng}
+                onChangeText={(value) => setLng(value)}
+              />
+            </View>
+          </View>
+        </View>
+
+        <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
+          <Text style={styles.submitButtonText}>Registrar</Text>
+        </TouchableOpacity>
+      </View>
+    </ScrollView>
   );
 }
 
 Mapa.navigationOptions = {
-  drawerLabel: 'Mapa',
-  drawerIcon: () => (
-    <FontAwesome name='map' size={30} color="red"/> 
-  ),
+  drawerLabel: "Mapa",
+  drawerIcon: () => <FontAwesome name="map" size={20} color="red" />,
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
+    backgroundColor: "#fff",
     // justifyContent: 'center',
-  
   },
   map: {
     width: 340,
-    height: 400,
+    height: 200,
+    alignSelf: "center",
   },
+  form: {
+    padding: 16,
+  },
+  inputContainer: {
+    marginHorizontal: 10,
+    flex: 1
+  },
+  label: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 8,
+    color: "#003566"
+  },
+  pickerContainer: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 8,
+    marginBottom: 16,
+    height: 35,
+  },
+  textArea: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 8,
+    padding: 12,
+    textAlignVertical: "top",
+    marginBottom: 16,
+  },
+  textInput: {
+    fontSize: 16,
+
+  },
+  submitButton: {
+    backgroundColor: "#003566",
+    padding: 12,
+    borderRadius: 8,
+    alignItems: "center",
+  },
+  submitButtonText: {
+    color: "#fff",
+    fontWeight: "bold",
+    fontSize: 16
+  },
+  datepicker: {
+    width: 100,
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+  },
+  latlngContainer:{
+    flexDirection: "row" ,
+  }
 });

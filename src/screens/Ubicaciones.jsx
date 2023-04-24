@@ -1,59 +1,100 @@
-import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableWithoutFeedback,
-} from "react-native";
+import React, { useEffect, useState, useContext } from "react";
+import { View, Text, StyleSheet, TouchableWithoutFeedback } from "react-native";
+import { FontAwesome } from "@expo/vector-icons";
 import axios from "axios";
-import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import EntypoIcon from 'react-native-vector-icons/Entypo';
-const Ubicaciones = () => {
-  const [scans, setScans] = useState([]);
+import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import { RutaContext } from "./RutaContext";
+import { ScrollView } from "react-native";
 
-  useEffect(() => {
-    axios
-      .get("http://onroutebackend.fly.dev/ubicaciones")
-      .then((response) => setScans(response.data))
-      .catch((error) => console.error(error));
-  }, []);
+const ScanCard = ({ scan, navigation }) => {
+  const [expanded, setExpanded] = useState(false);
 
-  const UbiCard = ({ scan }) => {
-    const [expanded, setExpanded] = useState(false);
+  const toggleExpand = () => {
+    setExpanded(!expanded);
+  };
 
-    const toggleExpand = () => {
-      setExpanded(!expanded);
-    };
+  const handleEditPress = (event) => {
+    event.stopPropagation();
+    navigation.navigate("EditUbicacion", { scan: scan });
+  };
 
-    return (
+  return (
+    <View style={[styles.scanCard, expanded && styles.expandedCard]}>
       <TouchableWithoutFeedback onPress={toggleExpand}>
-        <View style={[styles.UbiCard, expanded && styles.expandedCard]}>
-          <Text style={styles.scanName}><FontAwesome5Icon name="map-pin" style={styles.icon} /> {scan.tienda} </Text>
-          <Text style={styles.scanDate}><MaterialIcons name="date-range" style={styles.icon} /> {scan.fecha} </Text>
-          <Text style={styles.scanRoute}><FontAwesome5Icon name="user" style={styles.icon}/> {scan.ruta}</Text>
+        <View style={{ flex: 1 }}>
+          <Text style={styles.scanName}>
+            <FontAwesome5Icon name="map-pin" style={styles.icon} />{" "}
+            {scan.tienda}
+          </Text>
+          <Text style={styles.scanDate}>
+            <MaterialIcons name="date-range" style={styles.icon} /> {scan.fecha}{" "}
+          </Text>
+          <Text style={styles.scanRoute}>
+            <FontAwesome5Icon name="user" style={styles.icon} /> {scan.ruta}
+          </Text>
           {expanded && (
             <View>
               <Text style={styles.scanInfo}>
-              <FontAwesome5Icon name="road" style={styles.icon} /> {scan.colonia}, {scan.calle}
+                <FontAwesome5Icon name="road" style={styles.icon} />{" "}
+                {scan.colonia}, {scan.calle}
               </Text>
               <Text style={styles.scanInfo}>
-              <FontAwesome5Icon name="search-location" style={styles.icon} /> {scan.lat}, {scan.lng}
+                <FontAwesome5Icon name="search-location" style={styles.icon} />{" "}
+                {scan.lat}, {scan.lng}
               </Text>
             </View>
           )}
         </View>
       </TouchableWithoutFeedback>
-    );
-  };
+      {expanded && (
+        <View style={styles.editIconContainer}>
+          <TouchableWithoutFeedback onPress={handleEditPress}>
+            <FontAwesome
+              name="edit"
+              size={25}
+              color="#003566"
+              style={{ top: -7 }}
+            />
+          </TouchableWithoutFeedback>
+        </View>
+      )}
+    </View>
+  );
+};
+
+const Ubicaciones = ({ navigation }) => {
+  const [situaciones, setSituaciones] = useState([]);
+  const { ruta, setRuta, newSituationAdded, setNewSituationAdded } =
+    useContext(RutaContext);
+
+  useEffect(() => {
+    const obtenerSituaciones = async () => {
+      try {
+        const response = await axios.get(
+          `https://onroutebackend.fly.dev/ubicaciones?ruta=${ruta}`
+        );
+        setSituaciones(response.data);
+      } catch (error) {
+        console.error("Error al obtener situaciones:", error);
+      }
+    };
+
+    obtenerSituaciones();
+    setNewSituationAdded(false);
+  }, [ruta, newSituationAdded]);
 
   return (
     <View style={styles.container}>
-      <View style={styles.scanList}>
-        {scans.map((scan) => (
-          <UbiCard key={scan._id} scan={scan} />
+    
+      <ScrollView
+        style={styles.scanList}
+        contentContainerStyle={styles.contentContainer}
+      >
+        {situaciones.map((scan, index) => (
+          <ScanCard key={index} scan={scan} navigation={navigation} />
         ))}
-      </View>
+      </ScrollView>
     </View>
   );
 };
@@ -73,14 +114,16 @@ const styles = StyleSheet.create({
   },
   scanList: {
     flex: 1,
+  },
+  contentContainer: {
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-between",
     alignItems: "flex-start",
   },
-  UbiCard: {
+  scanCard: {
     width: "47%",
-    height: 140,
+    height: 150,
     marginBottom: 20,
     borderRadius: 10,
     backgroundColor: "#fff",
@@ -102,7 +145,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 10,
     color: "#003566",
-   paddingTop: 10,
+    paddingTop: 10,
   },
   scanDate: {
     fontSize: 16,
@@ -110,12 +153,12 @@ const styles = StyleSheet.create({
   },
   scanRoute: {
     fontSize: 14,
+    fontWeight: "bold",
     color: "#003566",
-    fontWeight: "bold"
   },
   expandedCard: {
     width: "100%",
-    height: 200,
+    height: 180,
     borderRadius: 10,
     backgroundColor: "#fff",
     shadowColor: "#000",
@@ -136,7 +179,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 20,
     color: "#003566",
- 
   },
   expandedDate: {
     fontSize: 20,
@@ -148,9 +190,10 @@ const styles = StyleSheet.create({
     color: "#888",
     marginTop: 10,
   },
-  icon: {
-    marginRight: 5,
-    fontSize: 14
+  editIconContainer: {
+    position: "absolute",
+    top: 10,
+    right: 10,
   },
 });
 
