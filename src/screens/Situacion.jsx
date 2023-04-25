@@ -17,7 +17,6 @@ const Situacion = ({ navigation }) => {
   const { ruta, setRuta, newSituationAdded, setNewSituationAdded } =
     useContext(RutaContext);
   const [situation, setSituation] = useState("");
-  const [otherSituation, setOtherSituation] = useState("");
   const [description, setDescription] = useState("");
 
   const [dateTime, setDateTime] = useState("");

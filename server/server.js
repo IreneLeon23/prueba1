@@ -17,8 +17,7 @@ app.get("/", (req, res) => {
   res.send("Hola cara de bola!");
 });
 
- //Importacion de archivo de rutas y modelo
-
+//Importacion de archivo de rutas y modelo
 
 // //Situaciones
 // const situacionRoutes = require("./routes/situaciones");
@@ -37,10 +36,11 @@ app.use("/ubicaciones", ubicacionesRoutes);
 //Usuarios
 const usuariosRoutes = require("./routes/getUsers");
 app.use("/usuarios", usuariosRoutes);
+//Un usuario
+const usuarioRoutes = require("./routes/getOneUser");
+app.use("/usuario", usuarioRoutes);
 
 const postUbicaciones = require("./routes/postUbicaciones");
-app.use("/postubicacion", postUbicaciones)
-
-
+app.use("/postubicacion", postUbicaciones);
 
 app.listen(port, () => console.log(`Onroute app listening on port ${port}!`));

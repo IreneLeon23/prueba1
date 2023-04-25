@@ -7,8 +7,9 @@ const Ubicaciones = require("../models/ubicaciones");
 
 //ROUTE
 router.get("/", async (req, res) => {
+  const {ruta} = req.query;
   try {
-    const ubicaciones = await Ubicaciones.find();
+    const ubicaciones = await Ubicaciones.find({ruta:ruta});
     res.json(ubicaciones);
   } catch (error) {
     console.log(error);
