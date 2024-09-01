@@ -1,25 +1,14 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import Situaciones from "../screens/Situaciones";
-import EditSituacion from "../screens/EditSituacion";
+
 import EditUbicacion from "../screens/EditUbicacion";
-import Ubicaciones from "../screens/Situaciones";
+import Ubicaciones from "../screens/Ubicaciones";
 
 const Stack = createStackNavigator();
 
-const AppNavigator = () => (
+const AppNavigatorU = () => (
   <Stack.Navigator initialRouteName="Situaciones">
-    <Stack.Screen
-      name="Situacioness"
-      component={Situaciones}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen
-      name="EditSituacion"
-      component={EditSituacion}
-      options={{ headerShown: false }}
-    />
     <Stack.Screen
       name="Ubicaciones"
       component={Ubicaciones}
@@ -33,4 +22,4 @@ const AppNavigator = () => (
   </Stack.Navigator>
 );
 
-export default AppNavigator;
+export default AppNavigatorU;

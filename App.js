@@ -17,6 +17,7 @@ import { useFonts } from "expo-font";
 import RutaContext from "./src/screens/RutaContext";
 import RutaProvider from "./src/screens/RutaContext";
 import AppNavigator from "./src/components/StackNavigator";
+import AppNavigatorU from "./src/components/AlterStackNavigator";
 
 const Drawer = createDrawerNavigator();
 
@@ -61,7 +62,7 @@ const App = () => {
             />
             <Drawer.Screen
               name="Ubicaciones"
-              component={Ubicaciones}
+              component={AppNavigatorU}
               options={{
                 title: "Ubicaciones",
                 drawerIcon: ({ focused, size }) => (

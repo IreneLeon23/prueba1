@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/IreneLeon23/prueba1.git"
+    "url": "https://github.com/IreneLeon23/OnRoute.git"
   },
   "author": "MIDAH",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/IreneLeon23/prueba1/issues"
+    "url": "https://github.com/IreneLeon23/OnRoute/issues"
   },
-  "homepage": "https://github.com/IreneLeon23/prueba1#readme",
+  "homepage": "https://github.com/IreneLeon23/OnRoute#readme",
   "dependencies": {
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",

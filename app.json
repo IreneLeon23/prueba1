@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "prueba1",
+    "name": "OnRoute",
     "slug": "prueba1",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -29,10 +29,16 @@
         "googleMaps": {
           "apiKey": "AIzaSyC1uiHQ5H6ojVWviR1xlDe_dKNUgjplEo8"
         }
-      }
+      },
+      "package": "com.onroute.app"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "d19248dd-99ad-490f-ac20-15dff37c16f9"
+      }
     }
   }
 }

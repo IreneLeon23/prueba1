@@ -1,4 +1,4 @@
-import { Picker } from "@react-native-picker/picker";
+
 import React, { useState, useContext } from "react";
 import {
   View,
@@ -106,7 +106,7 @@ const EditSituacion = ({ navigation }) => {
         </View>
 
         <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
-          <Text style={styles.submitButtonText}>Submit</Text>
+          <Text style={styles.submitButtonText}>Actualizar</Text>
         </TouchableOpacity>
       </View>
     </View>
